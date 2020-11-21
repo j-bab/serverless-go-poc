@@ -1,0 +1,11 @@
+{
+  "name": "serverless_poc",
+  "version": "1.0.0",
+  "description": "",
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "serverless-prune-plugin": "^1.4.3"
+  }
+}
