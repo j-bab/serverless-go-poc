@@ -1,5 +1,5 @@
 {
   "serviceName": "poc-go-notes",
   "region": "eu-west-1",
-  "AwsAccountId": "392596086568"
+  "AwsAccountId": "YOUR_ACCOUNT_ID_HERE"
 }
