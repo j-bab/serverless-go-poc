@@ -149,10 +149,7 @@ func ListNotes(UserId string) ([]Item, error) {
 	//filter by user id
 	userIdFilter := expression.Name("userId").Equal(expression.Value(UserId))
 
-	// Get back the title, year, and rating
-	proj := expression.NamesList(expression.Name("userId"), expression.Name("timestamp"), expression.Name("body"))
-
-	expr, err := expression.NewBuilder().WithFilter(userIdFilter).WithProjection(proj).Build()
+	expr, err := expression.NewBuilder().WithFilter(userIdFilter).Build()
 
 	if err != nil {
 		fmt.Println("Got error building expression:")
@@ -165,7 +162,6 @@ func ListNotes(UserId string) ([]Item, error) {
 		ExpressionAttributeNames:  expr.Names(),
 		ExpressionAttributeValues: expr.Values(),
 		FilterExpression:          expr.Filter(),
-		ProjectionExpression:      expr.Projection(),
 		TableName:                 getTableName(),
 	}
 
