@@ -139,38 +139,38 @@ resources:
         Value:
           'Fn::GetAtt': [ AppCloudFrontDistribution, DomainName ]
 functions:
-  notesCreate:
-    handler: bin/notes/create
+  notesList:
+    handler: bin/list
     events:
       - http:
-          path: notes/{id}
+          path: notes/{userId}
+          method: get
+          cors: true
+  notesCreate:
+    handler: bin/create
+    events:
+      - http:
+          path: notes/{userId}/
           method: post
           cors: true
   notesRead:
-    handler: bin/notes/read
+    handler: bin/read
     events:
       - http:
-          path: notes/{id}
+          path: notes/{userId}/{timestamp}
           method: get
           cors: true
   notesUpdate:
-    handler: bin/notes/update
+    handler: bin/update
     events:
       - http:
-          path: notes/{id}
+          path: notes/{userId}/{timestamp}
           method: put
           cors: true
   notesDelete:
-    handler: bin/notes/delete
+    handler: bin/delete
     events:
       - http:
-          path: notes/{id}
+          path: notes/{userId}/{timestamp}
           method: delete
-          cors: true
-  notesList:
-    handler: bin/notes/list
-    events:
-      - http:
-          path: notes
-          method: get
           cors: true
