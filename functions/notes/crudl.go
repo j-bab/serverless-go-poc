@@ -1,6 +1,7 @@
 package main
 
 import (
+	"encoding/json"
 	"fmt"
 	"github.com/aws/aws-sdk-go/aws"
 	"github.com/aws/aws-sdk-go/aws/session"
@@ -38,6 +39,10 @@ func stringToTimestamp(TimestampString string) (int64, error) {
 		return 0, nil
 	}
 	return strconv.ParseInt(TimestampString, 10, 64)
+}
+func StringifyItem(item Item) string {
+	jsonItem, _ := json.Marshal(item)
+	return string(jsonItem)
 }
 
 func CreateNote(item Item) (Item, error) {
