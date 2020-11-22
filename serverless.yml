@@ -116,17 +116,21 @@ resources:
           ## The certificate to use when viewers use HTTPS to request objects.
           ViewerCertificate:
             CloudFrontDefaultCertificate: 'true'
-    #A very basic column table with a Unique id to address each note by (for example to delete it)
+    # A very basic  table with an index on userId and timestamp
     NotesDynamoDBTable:
       Type: AWS::DynamoDB::Table
       Properties:
         TableName: ${self:provider.environment.notesTable}
         AttributeDefinitions:
-          - AttributeName: uuid
+          - AttributeName: userId
             AttributeType: S
+          - AttributeName: timestamp
+            AttributeType: N
         KeySchema:
-          - AttributeName: uuid
+          - AttributeName: userId
             KeyType: HASH
+          - AttributeName: timestamp
+            KeyType: RANGE
         ProvisionedThroughput:
           ReadCapacityUnits: 1
           WriteCapacityUnits: 1
