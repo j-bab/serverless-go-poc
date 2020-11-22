@@ -33,6 +33,7 @@ add `env GOOS=linux ` to the beginning of each remaining line in this section.
 it should resemble something like this:  
 `env GOOS=linux go build -ldflags="-s -w" -o bin/note functions/note/main.go`
 
+
 ## Deployment
 
 In the project directory, run:
@@ -44,6 +45,11 @@ By default serverless will use the stage "dev" when deploying the stack
 
 After a (long) while your cloudFormation will have been created and run, and if you look in your AWS console you should see your freshly created S3 buckets, dynamoDb table, Lambdas, Api Gateway and cloudFront distribution.
 You should also see log groups in cloudWatch.
+
+
+If the "bin" directory does not exist, it may cause an error when deploy is run as the clean operation will try to delete a non-existent directory.  
+Simply create a directory called "bin" in the project root if this is the case (or run `make build`)
+
 
 ## Next steps
 Infrastructure and API are now deployed.  
