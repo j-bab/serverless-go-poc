@@ -5,12 +5,11 @@ import (
 	"fmt"
 	"github.com/aws/aws-lambda-go/events"
 	"github.com/aws/aws-lambda-go/lambda"
-	"strconv"
 )
 
 func Handler(request events.APIGatewayProxyRequest) (events.APIGatewayProxyResponse, error) {
 
-	timestamp, err := strconv.ParseInt(request.PathParameters["timestamp"], 10, 64)
+	timestamp, err := stringToTimestamp(request.PathParameters["timestamp"])
 	item, err := GetNote(request.PathParameters["userId"], timestamp)
 	if err != nil {
 		fmt.Println("Got error fetching record")
