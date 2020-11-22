@@ -56,7 +56,7 @@ Infrastructure and API are now deployed.
 Now we can pull the [repository for the client app](https://github.com/j-bab/serverless-go-poc-client),
  configure it and deploy it to the app bucket we just created to serve from cloudFront
  
- 
+ To run the tests, simply run `go test`from the directory containing the tests to run.
  ### Thanks to
  
  https://github.com/awsdocs/aws-doc-sdk-examples/blob/master/go/example_code/dynamodb/  
@@ -64,5 +64,7 @@ Now we can pull the [repository for the client app](https://github.com/j-bab/ser
  https://github.com/nerdguru/go-sls-crudl/blob/master/functions/get.go
  
  https://www.softkraft.co/aws-lambda-in-golang/
+ 
+ https://blog.alexellis.io/golang-writing-unit-tests/
  
 and an intelli GoLand free trial 
