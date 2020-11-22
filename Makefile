@@ -1,15 +1,16 @@
-.PHONY: build clean deploy
+.ONESHELL:
 
 build:
 	set GOOS=linux
-	go build -ldflags="-s -w" -o bin/notes/create functions/notes/create.go
-	go build -ldflags="-s -w" -o bin/notes/read functions/notes/read.go
-	go build -ldflags="-s -w" -o bin/notes/update functions/notes/update.go
-	go build -ldflags="-s -w" -o bin/notes/delete functions/notes/delete.go
-	go build -ldflags="-s -w" -o bin/notes/list functions/notes/list.go
+	set GOARCH=amd64
+	go build -ldflags="-s -w" -o bin/create functions/notes/create.go functions/notes/crudl.go
+	go build -ldflags="-s -w" -o bin/read functions/notes/read.go functions/notes/crudl.go
+	go build -ldflags="-s -w" -o bin/update functions/notes/update.go functions/notes/crudl.go
+	go build -ldflags="-s -w" -o bin/delete functions/notes/delete.go functions/notes/crudl.go
+	go build -ldflags="-s -w" -o bin/list functions/notes/list.go functions/notes/crudl.go
 
 clean:
-	rd /s /q  "./bin"
+	if exist "./bin" rd /s /q  "./bin"
 
 deploy: clean build
 	sls deploy --verbose
