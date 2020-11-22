@@ -1,8 +1,14 @@
 package main
 
 import (
+	"encoding/json"
 	"time"
 )
+
+func StringifyItem(item Item) string {
+	jsonItem, _ := json.Marshal(item)
+	return string(jsonItem)
+}
 
 func postRequest(UserId string, Body string) (string, error) {
 
