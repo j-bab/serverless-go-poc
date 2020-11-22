@@ -1,43 +1,33 @@
 package main
 
 import (
-	"bytes"
-	"context"
 	"encoding/json"
-
+	"fmt"
 	"github.com/aws/aws-lambda-go/events"
 	"github.com/aws/aws-lambda-go/lambda"
 )
 
-// Response is of type APIGatewayProxyResponse since we're leveraging the
-// AWS Lambda Proxy Request functionality (default behavior)
-//
-// https://serverless.com/framework/docs/providers/aws/events/apigateway/#lambda-proxy-integration
-type Response events.APIGatewayProxyResponse
+func Handler(request events.APIGatewayProxyRequest) (events.APIGatewayProxyResponse, error) {
 
-// Handler is our lambda handler invoked by the `lambda.Start` function call
-func Handler(ctx context.Context) (Response, error) {
-	var buf bytes.Buffer
-
-	body, err := json.Marshal(map[string]interface{}{
-		"message": "Okay so your other function also executed successfully!",
-	})
+	items, err := ListNotes(request.PathParameters["userId"])
 	if err != nil {
-		return Response{StatusCode: 404}, err
-	}
-	json.HTMLEscape(&buf, body)
-
-	resp := Response{
-		StatusCode:      200,
-		IsBase64Encoded: false,
-		Body:            buf.String(),
-		Headers: map[string]string{
-			"Content-Type":           "application/json",
-			"X-MyCompany-Func-Reply": "world-handler",
-		},
+		fmt.Println("Failed fetching notes")
+		fmt.Println(err.Error())
+		return events.APIGatewayProxyResponse{Body: "Error", StatusCode: 500}, nil
 	}
 
-	return resp, nil
+	// Log and return result
+	stringItems := "["
+	for i := 0; i < len(items); i++ {
+		jsonItem, _ := json.Marshal(items[i])
+		stringItems += string(jsonItem)
+		if i != len(items)-1 {
+			stringItems += ",\n"
+		}
+	}
+	stringItems += "]\n"
+	fmt.Println("Found items: ", stringItems)
+	return events.APIGatewayProxyResponse{Body: stringItems, StatusCode: 200}, nil
 }
 
 func main() {

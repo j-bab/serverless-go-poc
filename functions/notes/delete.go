@@ -1,43 +1,23 @@
 package main
 
 import (
-	"bytes"
-	"context"
-	"encoding/json"
-
+	"fmt"
 	"github.com/aws/aws-lambda-go/events"
 	"github.com/aws/aws-lambda-go/lambda"
 )
 
-// Response is of type APIGatewayProxyResponse since we're leveraging the
-// AWS Lambda Proxy Request functionality (default behavior)
-//
-// https://serverless.com/framework/docs/providers/aws/events/apigateway/#lambda-proxy-integration
-type Response events.APIGatewayProxyResponse
+func Handler(request events.APIGatewayProxyRequest) (events.APIGatewayProxyResponse, error) {
 
-// Handler is our lambda handler invoked by the `lambda.Start` function call
-func Handler(ctx context.Context) (Response, error) {
-	var buf bytes.Buffer
+	timestamp, err := stringToTimestamp(request.PathParameters["timestamp"])
 
-	body, err := json.Marshal(map[string]interface{}{
-		"message": "Go Serverless v1.0! Your function executed successfully!",
-	})
+	err = DeleteNote(request.PathParameters["userId"], timestamp)
 	if err != nil {
-		return Response{StatusCode: 404}, err
+		panic(fmt.Sprintf("Failed to find Item, %v", err))
 	}
-	json.HTMLEscape(&buf, body)
+	// Log and return result
+	fmt.Println("Deleted item: ")
 
-	resp := Response{
-		StatusCode:      200,
-		IsBase64Encoded: false,
-		Body:            buf.String(),
-		Headers: map[string]string{
-			"Content-Type":           "application/json",
-			"X-MyCompany-Func-Reply": "hello-handler",
-		},
-	}
-
-	return resp, nil
+	return events.APIGatewayProxyResponse{Body: "DeletedNote", StatusCode: 200}, nil
 }
 
 func main() {

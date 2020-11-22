@@ -1,43 +1,37 @@
 package main
 
 import (
-	"bytes"
-	"context"
 	"encoding/json"
-
+	"fmt"
 	"github.com/aws/aws-lambda-go/events"
 	"github.com/aws/aws-lambda-go/lambda"
+	"time"
 )
 
-// Response is of type APIGatewayProxyResponse since we're leveraging the
-// AWS Lambda Proxy Request functionality (default behavior)
-//
-// https://serverless.com/framework/docs/providers/aws/events/apigateway/#lambda-proxy-integration
-type Response events.APIGatewayProxyResponse
+func Handler(request events.APIGatewayProxyRequest) (events.APIGatewayProxyResponse, error) {
 
-// Handler is our lambda handler invoked by the `lambda.Start` function call
-func Handler(ctx context.Context) (Response, error) {
-	var buf bytes.Buffer
+	var requestBody ItemRequestBody
+	json.Unmarshal([]byte(request.Body), &requestBody)
 
-	body, err := json.Marshal(map[string]interface{}{
-		"message": "Go Serverless v1.0! Your function executed successfully!",
-	})
+	now := time.Now()
+	requestItem := Item{
+		UserId:    request.PathParameters["userId"],
+		Timestamp: now.Unix(),
+		Body:      requestBody.Body,
+	}
+
+	item, err := CreateNote(requestItem)
 	if err != nil {
-		return Response{StatusCode: 404}, err
-	}
-	json.HTMLEscape(&buf, body)
-
-	resp := Response{
-		StatusCode:      200,
-		IsBase64Encoded: false,
-		Body:            buf.String(),
-		Headers: map[string]string{
-			"Content-Type":           "application/json",
-			"X-MyCompany-Func-Reply": "hello-handler",
-		},
+		fmt.Println("Error creating item")
+		fmt.Println(err.Error())
+		return events.APIGatewayProxyResponse{Body: "Error", StatusCode: 500}, nil
 	}
 
-	return resp, nil
+	// Log and return result
+	jsonItem, _ := json.Marshal(item)
+	stringItem := string(jsonItem) + "\n"
+	fmt.Println("Wrote item: ", stringItem)
+	return events.APIGatewayProxyResponse{Body: stringItem, StatusCode: 200}, nil
 }
 
 func main() {
