@@ -26,6 +26,10 @@ func getDynamoDb() *dynamodb.DynamoDB {
 	return dynamodb.New(sess)
 }
 
+func getTableName() *string {
+	return aws.String(os.Getenv("notesTable"))
+}
+
 func timestampToString(Timestamp int64) string {
 	return strconv.FormatInt(Timestamp, 10)
 }
@@ -47,7 +51,7 @@ func CreateNote(item Item) (Item, error) {
 	// Create item
 	input := &dynamodb.PutItemInput{
 		Item:      av,
-		TableName: aws.String(os.Getenv("notesTable")),
+		TableName: getTableName(),
 	}
 	_, err = svc.PutItem(input)
 
@@ -64,7 +68,7 @@ func GetNote(UserId string, Timestamp int64) (Item, error) {
 	item := Item{}
 
 	result, err := svc.GetItem(&dynamodb.GetItemInput{
-		TableName: aws.String(os.Getenv("notesTable")),
+		TableName: getTableName(),
 		Key: map[string]*dynamodb.AttributeValue{
 			"userId": {
 				S: aws.String(UserId),
@@ -96,7 +100,7 @@ func UpdateNote(item Item) (Item, error) {
 				S: aws.String(item.Body),
 			},
 		},
-		TableName: aws.String(os.Getenv("notesTable")),
+		TableName: getTableName(),
 		Key: map[string]*dynamodb.AttributeValue{
 			"userId": {
 				S: aws.String(item.UserId),
@@ -129,7 +133,7 @@ func DeleteNote(UserId string, Timestamp int64) error {
 				N: aws.String(timestampToString(Timestamp)),
 			},
 		},
-		TableName: aws.String(os.Getenv("notesTable")),
+		TableName: getTableName(),
 	}
 	_, err := svc.DeleteItem(input)
 	if err != nil {
@@ -162,7 +166,7 @@ func ListNotes(UserId string) ([]Item, error) {
 		ExpressionAttributeValues: expr.Values(),
 		FilterExpression:          expr.Filter(),
 		ProjectionExpression:      expr.Projection(),
-		TableName:                 aws.String(os.Getenv("notesTable")),
+		TableName:                 getTableName(),
 	}
 
 	// Make the DynamoDB Query API call
