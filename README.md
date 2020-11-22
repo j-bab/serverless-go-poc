@@ -28,10 +28,9 @@ If you are NOT using Windows you will also need to adjust the Makefile as follow
   
 Change the command for clean by replacing 	`rd /s /q  "./bin"` with `rm -rf ./bin`  
 Change the build commands as follows:  
-remove the line `	set GOOS=linux`  
-add `env GOOS=linux ` to the beginning of each remaining line in this section.
-it should resemble something like this:  
-`env GOOS=linux go build -ldflags="-s -w" -o bin/note functions/note/main.go`
+replace the line `	set GOOS=linux`  with `env GOOS=linux `   
+replace the line `	set GOARCH=amd6`  with `env GOARCH=amd6 `   
+
 
 
 ## Deployment
@@ -63,5 +62,7 @@ Now we can pull the [repository for the client app](https://github.com/j-bab/ser
  https://github.com/awsdocs/aws-doc-sdk-examples/blob/master/go/example_code/dynamodb/  
 
  https://github.com/nerdguru/go-sls-crudl/blob/master/functions/get.go
+ 
+ https://www.softkraft.co/aws-lambda-in-golang/
  
 and an intelli GoLand free trial 
