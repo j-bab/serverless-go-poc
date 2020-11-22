@@ -34,6 +34,9 @@ func timestampToString(Timestamp int64) string {
 	return strconv.FormatInt(Timestamp, 10)
 }
 func stringToTimestamp(TimestampString string) (int64, error) {
+	if TimestampString == "" {
+		return 0, nil
+	}
 	return strconv.ParseInt(TimestampString, 10, 64)
 }
 
