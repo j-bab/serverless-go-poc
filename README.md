@@ -15,6 +15,8 @@ Assuming you use windows, you'll need to install make as well (with chocolatey: 
 
 run `npm install` in the project directory
 
+run `go get ./...` in the project directory to fetch the go dependencies
+
 ## Configuration
 
 configure AWS cli and serverless:  
