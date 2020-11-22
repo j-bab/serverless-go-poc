@@ -195,10 +195,6 @@ func ListNotes(UserId string) ([]Item, error) {
 	}
 
 	fmt.Println("Found", numItems, " notes ")
-	if err != nil {
-		fmt.Println(err.Error())
-		return items, err
-	}
 
 	return items, nil
 }
