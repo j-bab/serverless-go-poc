@@ -54,4 +54,14 @@ Simply create a directory called "bin" in the project root if this is the case (
 ## Next steps
 Infrastructure and API are now deployed.  
 
-Now we can pull the [repository for the client app](https://github.com/j-bab/serverless-go-poc-client), configure it and deploy it to the app bucket we just created to serve from cloudFront
+Now we can pull the [repository for the client app](https://github.com/j-bab/serverless-go-poc-client),
+ configure it and deploy it to the app bucket we just created to serve from cloudFront
+ 
+ 
+ ### Thanks to
+ 
+ https://github.com/awsdocs/aws-doc-sdk-examples/blob/master/go/example_code/dynamodb/  
+
+ https://github.com/nerdguru/go-sls-crudl/blob/master/functions/get.go
+ 
+and an intelli GoLand free trial 
