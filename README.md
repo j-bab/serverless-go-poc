@@ -70,3 +70,6 @@ Now we can pull the [repository for the client app](https://github.com/j-bab/ser
  https://blog.alexellis.io/golang-writing-unit-tests/
  
 and an intelli GoLand free trial 
+
+and for CORS:
+https://adamdrake.com/serverless-with-lambda-api-gateway-and-go.html

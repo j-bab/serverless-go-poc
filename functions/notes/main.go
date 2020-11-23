@@ -42,7 +42,11 @@ func Handler(request events.APIGatewayProxyRequest) (events.APIGatewayProxyRespo
 
 	fmt.Println(responseBody)
 	fmt.Println("FINISHED")
-	return events.APIGatewayProxyResponse{Body: responseBody, StatusCode: 200}, nil
+
+	//CORS
+	headers := make(map[string]string)
+	headers["Access-Control-Allow-Origin"] = "*"
+	return events.APIGatewayProxyResponse{Body: responseBody, Headers: headers, StatusCode: 200}, nil
 }
 
 func main() {
