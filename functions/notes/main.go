@@ -32,6 +32,7 @@ func Handler(request events.APIGatewayProxyRequest) (events.APIGatewayProxyRespo
 		}
 	case "DELETE":
 		responseBody, err = deleteRequest(UserId, Timestamp)
+		responseBody = "{\"status\":\"" + responseBody + "\"}"
 	}
 
 	if err != nil {
